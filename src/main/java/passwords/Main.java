@@ -3,35 +3,40 @@ package passwords;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import org.apache.commons.lang3.RandomStringUtils;
-// RandomStringUtils permite generar cadenas aleatorias: numéricas, alfanuméricas,
-// o usando conjuntos personalizados de caracteres.
+
+// En una clase con el método main, implementa una aplicación para
+// generar contraseñas y números pin de móvil. La aplicación tendrá tres
+// opciones: la primera, genera números pin aleatorios para tarjetas SIM 
+// de teléfonos móviles; la segunda opción genera contraseñas para usuarios
+// de un sistema operativo con 8 caracteres, incluyendo números y letras; la
+// tercera opción, genera una secuencia de "n" caracteres aleatorios de un 
+// conjunto que tú elijas (debes pasar un array de char de 10 elementos). El 
+// número "n" se debe solicitar por teclado.
+// El programa se repite hasta que el usuario decida salir.
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+        Scanner tec = new Scanner(System.in);
         int opcion = 0;
 
         do {
-            System.out.println("\n------ GENERADOR DE CONTRASEÑAS ------");
-            System.out.println("1. Generar PIN aleatorio para SIM (4 dígitos)");
-            System.out.println("2. Generar contraseña alfanumérica (8 caracteres)");
-            System.out.println("3. Generar secuencia de N caracteres personalizados");
+            System.out.println("------ GENERADOR DE CONTRASEÑAS ------");
+            System.out.println("1. Genera un PIN aleatorio para SIM (4 dígitos)");
+            System.out.println("2. Genera una contraseña alfanumérica (8 caracteres)");
+            System.out.println("3. Genera una secuencia de N caracteres personalizados");
             System.out.println("4. Salir");
 
-            // ==========================
-            // LECTURA SEGURA DE OPCIÓN
-            // ==========================
             boolean entradaCorrecta = false;
             while (!entradaCorrecta) {
                 try {
                     System.out.print("Seleccione una opción: ");
-                    opcion = sc.nextInt();   // Puede lanzar InputMismatchException
+                    opcion = tec.nextInt(); // Puede lanzar InputMismatchException
                     entradaCorrecta = true;
-                } catch (InputMismatchException e) {
-                    System.out.println("Error: Debe ingresar un número válido.");
-                    sc.nextLine(); // Limpia el buffer para evitar bucle infinito
+                } catch (InputMismatchException ime) {
+                    System.out.println("Error: Debe ingresar un número válido, no un texto");
+                    tec.nextLine(); // Limpieza de buffer
                 }
             }
 
@@ -50,17 +55,14 @@ public class Main {
                     int n = 0;
                     boolean numeroCorrecto = false;
 
-                    // ===================================
-                    // LECTURA SEGURA DEL NÚMERO "n"
-                    // ===================================
                     while (!numeroCorrecto) {
                         try {
                             System.out.print("Ingrese el número de caracteres a generar: ");
-                            n = sc.nextInt();  // También puede lanzar InputMismatchException
+                            n = tec.nextInt(); // Puede lanzar InputMismatchException
                             numeroCorrecto = true;
-                        } catch (InputMismatchException e) {
+                        } catch (InputMismatchException ime) {
                             System.out.println("Error: Debe ingresar un número válido.");
-                            sc.nextLine(); // Limpiar entrada inválida
+                            tec.nextLine(); // Limpieza de buffer
                         }
                     }
 
@@ -78,40 +80,47 @@ public class Main {
 
         } while (opcion != 4);
 
-        sc.close();
+        tec.close();
     }
 
-    // =======================================================
-    // MÉTODO 1: Generar PIN de 4 dígitos
-    // =======================================================
+    // Función 1: genera números pin aleatorios para tarjetas SIM de teléfonos
+    // móviles
+
     public static String generarPinSIM() {
         // secure() → genera cadenas con un generador seguro criptográficamente
-        RandomStringUtils generador = RandomStringUtils.secure();
+        RandomStringUtils generador = RandomStringUtils.secure(); // RandomStringUtils permite generar cadenas
+                                                                  // aleatorias: numéricas, alfanuméricas,
+        // o usando conjuntos personalizados de caracteres.
 
         // nextNumeric(4) → genera un string de 4 números aleatorios
         return generador.nextNumeric(4);
     }
 
-    // =======================================================
-    // MÉTODO 2: Generar contraseña alfanumérica de 8 caracteres
-    // =======================================================
+    // Función 2: genera contraseñas para usuarios de un sistema operativo con 8
+    // caracteres, incluyendo números y letras
+
     public static String generarPasswordAlfanumerica() {
-        RandomStringUtils generador = RandomStringUtils.secure();
+        RandomStringUtils generador = RandomStringUtils.secure(); // RandomStringUtils permite generar cadenas
+                                                                  // aleatorias: numéricas, alfanuméricas,
+        // o usando conjuntos personalizados de caracteres.
 
         // nextAlphanumeric(8) → genera un string con letras y números
         // toUpperCase() → lo convierte todo a mayúsculas
         return generador.nextAlphanumeric(8).toUpperCase();
     }
 
-    // =======================================================
-    // MÉTODO 3: Generar secuencia "n" de caracteres desde array personalizado
-    // =======================================================
+    // Función 3: genera una secuencia de "n" caracteres aleatorios
+    // de un conjunto que tú elijas (debes pasar un array de char de 10 elementos).
+    // El número "n" se debe solicitar por teclado.
+
     public static String generarSecuenciaPersonalizada(int n) {
 
-        // Array EXACTO de 10 caracteres como pide el enunciado
-        char[] conjunto = {'A', 'B', 'C', '1', '2', '3', 'X', 'Y', 'Z', '9'};
+        // Array de 10 caracteres char
+        char[] conjunto = { 'A', 'B', 'C', '1', '2', '3', 'X', 'Y', 'Z', '9' };
 
-        RandomStringUtils generador = RandomStringUtils.secure();
+        RandomStringUtils generador = RandomStringUtils.secure(); // RandomStringUtils permite generar cadenas
+                                                                  // aleatorias: numéricas, alfanuméricas,
+        // o usando conjuntos personalizados de caracteres.
 
         // next(n, conjunto) → genera una cadena usando SOLO los caracteres del array
         return generador.next(n, conjunto);
